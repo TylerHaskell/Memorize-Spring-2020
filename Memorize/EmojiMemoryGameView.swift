@@ -12,14 +12,22 @@ struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
     
     var body: some View {
-        Grid (viewModel.cards) { card in
+        VStack {
+            Text("\(EmojiMemoryGame.gameTheme.themeName) Theme")
+            Text("Score: \(viewModel.score)")
+            Grid (viewModel.cards) { card in
                 CardView(card: card).onTapGesture {
                     self.viewModel.choose(card: card)
+                }
+                .padding(5)
             }
-        .padding(5)
+            .padding()
+            .foregroundColor(EmojiMemoryGame.gameTheme.themeColor)
+            Button("New Game") {
+                self.viewModel.newGame()
+            }
         }
         .padding()
-        .foregroundColor(Color.orange)
     }
 }
 
@@ -40,7 +48,7 @@ struct CardView: View {
                 Text(self.card.content)
             } else {
                 if !card.isMatched {
-                RoundedRectangle(cornerRadius: cornerRadius).fill()
+                    RoundedRectangle(cornerRadius: cornerRadius).fill(AngularGradient(gradient: Gradient(colors: [EmojiMemoryGame.gameTheme.themeColor, Color.black]), center: UnitPoint()))
                 }
             }
         }
